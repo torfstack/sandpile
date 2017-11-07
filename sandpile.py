@@ -11,7 +11,7 @@ class Sandpile:
 		return str(self.pile)
 
 	def set(self, x, y, e):
-		if x > 0 && y > 0 && x < self.dim && y < self.dim:
+		if x > 0 and y > 0 and x < self.dim and y < self.dim:
 			self.pile[x,y] = e
 
 	def max(self):
