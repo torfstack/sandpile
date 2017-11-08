@@ -1,11 +1,18 @@
 import numpy as np
+import scipy.misc as smp
+from collections import deque
+
+colors = {1 : [255,0,0],
+		2 : [0,255,255],
+		3 : [0,0,255],
+		0 : [0, 0, 0]}
 
 class Sandpile:
 	"""Sandpile data structure, topple if entry >3"""
 
 	def __init__(self, dim=3):
 		self.dim = dim
-		self.pile = np.zeros((dim,dim), dtype=np.int)
+		self.pile = np.zeros((dim,dim), dtype=np.int, order='C')
 
 	def __str__(self):
 		return str(self.pile)
@@ -18,31 +25,48 @@ class Sandpile:
 		self.pile = np.full((self.dim,self.dim), 3, dtype=np.int)
 
 	def normalize(self):
-		modified = False
+		q = deque() # cintains only indices with value >3
+
+		# Look for values greater than 3, put those indices into a queue
 		for i in range(self.dim):
 			for j in range(self.dim):
 				if self.pile[i,j] > 3:
-					modified = True
-					self.pile[i,j] -= 4
-					if i > 0:
-						self.pile[i-1,j] += 1
-					if j > 0:
-						self.pile[i,j-1] += 1
-					if i < self.dim-1:
-						self.pile[i+1,j] += 1
-					if j < self.dim-1:
-						self.pile[i,j+1] += 1
-		if modified:
-			self.normalize()
+					q.append((i,j))
 
-	def add(self, other):
-		"""TODO"""
+		while len(q) != 0:
+			(a,b) = q.popleft()
+			if self.pile[a,b] > 3:
+				inc = self.pile[a,b]/4
+				self.pile[a,b] = self.pile[a,b]%4
+				if a > 0:
+					self.pile[a-1,b] += inc
+					if self.pile[a-1,b] > 3:
+						q.append((a-1,b))
+				if b > 0:
+					self.pile[a,b-1] += inc
+					if self.pile[a,b-1] > 3:
+						q.append((a,b-1))
+				if a < self.dim-1:
+					self.pile[a+1,b] += inc
+					if self.pile[a+1,b] > 3:
+						q.append((a+1,b))
+				if b < self.dim-1:	
+					self.pile[a,b+1] += inc
+					if self.pile[a,b+1] > 3:
+						q.append((a,b+1))
 
-testpile = Sandpile()
-print(str(testpile))
-testpile.max()
-print(str(testpile))
-testpile.set(1,1,4)
-print(str(testpile))
-testpile.normalize()
-print(str(testpile))
+	def toFractal(self):
+		self.normalize()
+		print("Finished Normalizing...")
+		data = np.zeros((self.dim, self.dim, 3), dtype=np.uint8, order='C')
+		for i in range (self.dim):
+			for j in range(self.dim):
+				data[i,j] = colors[self.pile[i,j]]
+		smp.imsave('rgb_fractal.png', data)
+
+size = 2**8
+mid = 2**7
+testpile = Sandpile(size)
+testpile.set(mid-1, mid-1, 2**14)
+print("Building Fractal...")
+testpile.toFractal()
