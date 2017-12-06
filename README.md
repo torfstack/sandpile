@@ -8,6 +8,9 @@ A *normalized* sandpile contains no values greater than 3. If a cell contains a 
 343 -> 404 -> 040 -> 101
 030    040    202    212
 ```
+Example fractal with dimension 400 and start value 30000
+
+![example fractal with dimension 400 and start value 30000](fractal.png)
 
 ### Using the java implementation
 Build Main.java
