@@ -1,5 +1,3 @@
-package de.riyil.sandpile;
-
 import java.lang.Math;
 
 public class Main {

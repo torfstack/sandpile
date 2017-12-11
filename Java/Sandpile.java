@@ -1,5 +1,3 @@
-package de.riyil.sandpile;
-
 import java.util.Arrays;
 import java.util.ArrayDeque;
 import java.lang.Math;
