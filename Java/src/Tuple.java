@@ -20,4 +20,8 @@ class Tuple {
 	public int getY() {
 		return this.y;
 	}
+
+	public String toString() {
+		return "("+x+","+y+")";
+	}
 }
