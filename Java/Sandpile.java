@@ -39,7 +39,7 @@ class Sandpile {
 	}
 
 	public void normalize() {
-		ArrayDeque<Tuple> set = new ArrayDeque<Tuple>(dim);
+		ArrayDeque<Tuple> queue = new ArrayDeque<Tuple>(dim);
 		boolean sym_hor = true;
 		boolean sym_vert = true;
 		System.out.println("Sandpile dimension is " + this.dim);
@@ -60,38 +60,38 @@ class Sandpile {
 		int axis_vert = sym_vert?(int)Math.ceil((float)this.dim/2):this.dim-1;
 		for (int i = 0; i <= axis_hor; ++i) {
 			for (int j = 0; j <= axis_vert; ++j) {
-				if (this.pile[i][j] > 3) set.add(new Tuple(i,j));
+				if (this.pile[i][j] > 3) queue.add(new Tuple(i,j));
 			}
 		}
 		System.out.println("Populated the queue with initial indexes, considering a " + axis_hor + " by " + axis_vert + " grid");
 
 		// topple the entries; don't bother with cells across the axis if symmetric
-		while (set.size() != 0) {
-			Tuple t = set.poll();
+		while (queue.size() != 0) {
+			Tuple t = queue.poll();
 			if (this.get(t) > 3) {
 				int inc = this.get(t)/4;
 				this.set(t, this.get(t)%4);
 
 				int a = t.getX();
 				int b = t.getY();
-
+				
 				if (a > 0) {
 					this.set(a-1,b,this.get(a-1,b)+inc);
-					if (this.get(a-1,b) > 3) set.add(new Tuple(a-1,b));
+					if (this.get(a-1,b) > 3) queue.add(new Tuple(a-1,b));
 				}
 				if (b > 0) {
 					this.set(a,b-1,this.get(a,b-1)+inc);
-					if (this.get(a,b-1) > 3) set.add(new Tuple(a,b-1));
+					if (this.get(a,b-1) > 3) queue.add(new Tuple(a,b-1));
 				}
 				if (a < this.dim-1 && (!sym_hor || a < Math.ceil((float)this.dim/2))) {
 					if (a+1==Math.ceil((float)this.dim/2)) this.set(a+1,b,this.get(a+1,b)+inc);
 					this.set(a+1,b,this.get(a+1,b)+inc);
-					if (this.get(a+1,b) > 3) set.add(new Tuple(a+1,b));
+					if (this.get(a+1,b) > 3) queue.add(new Tuple(a+1,b));
 				}
 				if (b < this.dim-1 && (!sym_vert || b < Math.ceil((float)this.dim/2))) {
 					if (b+1==Math.ceil((float)this.dim/2)) this.set(a,b+1,this.get(a,b+1)+inc);
 					this.set(a,b+1,this.get(a,b+1)+inc);
-					if (this.get(a,b+1) > 3) set.add(new Tuple(a,b+1));
+					if (this.get(a,b+1) > 3) queue.add(new Tuple(a,b+1));
 				}
 			}
 		}
