@@ -11,9 +11,8 @@ public class Main {
 		}
 		
 		long start = System.currentTimeMillis();
-		Sandpile sp = new Sandpile(dim);
-		sp.setMid(sand);
-		Fractal frac = new Fractal(sp);
+		Fractal frac = new Fractal(dim);
+		frac.setMid(sand);
 		frac.generateImg();
 		frac.saveImg(path);
 		long stop = System.currentTimeMillis();

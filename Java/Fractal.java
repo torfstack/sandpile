@@ -14,8 +14,12 @@ class Fractal {
 	private final int DARKRED = 0x7e0000;
 	private final int ORANGE = 0xcf7034;
 
-	public Fractal(Sandpile sp) {
-		this.sp = sp;
+	public Fractal(int dim) {
+		this.sp = new Sandpile(dim);
+	}
+
+	public void setMid(int e) {
+		this.sp.setMid(e);
 	}
 
 	public void generateImg() {
