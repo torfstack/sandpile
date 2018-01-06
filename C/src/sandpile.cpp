@@ -4,7 +4,7 @@
 #include <cmath>
 #include <time.h>
 #include <stdlib.h>
-//#include <Magick++.h>
+#include <png++/png.hpp>
 
 class Tuple {
 	private:
@@ -134,21 +134,41 @@ class Sandpile {
 				std::cout << "Copied values due to vertical symmetry" << std::endl;
 			}
 		}
+
+		png::rgb_pixel getColor(int marker) {
+			switch(marker) {
+				case 0: return png::rgb_pixel(54,22,184);
+				case 1:	return png::rgb_pixel(207,112,52);
+				case 2:	return png::rgb_pixel(65,113,159);
+				case 3: return png::rgb_pixel(126,0,0);
+			}
+		}
+
+		void createImage(std::string path) {
+			png::image<png::rgb_pixel> image(this->dim, this->dim);
+			for (png::uint_32 i = 0; i < image.get_width(); ++i) {
+				for (png::uint_32 j = 0; j < image.get_height(); ++j) {
+					image.set_pixel(i,j,this->getColor(this->get(i,j)));
+				}
+			}
+			image.write(path);
+		}
 };
 
 int main(int argc, char* argv[]) {
 	int dim = 129;
 	int sand = 1028;
-	//char* path = "..\\fractal.png";
+	std::string path = "..\\fractal.png";
 	for (int i = 0; i < argc; ++i) {
-		if (std::string(argv[i]) == "--dimension" && i+1 <= argc) dim = atoi(argv[i+1]);
-		if (std::string(argv[i]) == "--sand" && i+1 <= argc) sand = atoi(argv[i+1]);
-		//if (std::string(argv[i]) == "--path" && i+1 <= argc) path = args[i+1];
+		if (std::string(argv[i]) == "--size" && i+1 <= argc) dim = atoi(argv[i+1]);
+		if (std::string(argv[i]) == "--value" && i+1 <= argc) sand = atoi(argv[i+1]);
+		if (std::string(argv[i]) == "--path" && i+1 <= argc) path = std::string(argv[i+1]);
 	}
 	clock_t start = clock();
 	Sandpile pile = Sandpile(dim);
 	pile.setMid(sand);
 	pile.normalize();
+	pile.createImage(path);
 	clock_t end = clock()-start;
 	std::cout << "Task took " << end/CLOCKS_PER_SEC << " seconds" << std::endl;
 	return 0;
