@@ -12,26 +12,38 @@ Example fractal with dimension 400 and start value 30000
 
 ![example fractal with dimension 400 and start value 30000](fractal.png)
 
-### Using the Java implementation
-Build Main.java
+### C++
+Build
 ```
-cd Java
-javac Main.java
+cd C
+make
 ```
-Run it
+Run
 ```
-java Main --dimension <dim> --sand <pile> --path <path>
+./sandpile --size <size> --value <value> --path <path>
 ```
 with
 ```
-<dim> : image output will have size <dim>x<dim> (Java/fractal.png)
-<pile> : start value of center cell, all other cells are initialized to 0
+<size> : image output will have size <size>x<size>
+<value> : start value of center cell, all other cells are initialized to 0
 <path> : image store location (default "fractal.png")
 ```
-
-### Using the Python implementation
+### Java
+Build
+```
+cd Java
+javac Sandpile.java
+```
+Run
+```
+java Sandpile -s|--size <size> -v|--value <value> -p|--path <path>
+```
+### Python
 Requires numpy and scipy.misc
-
+```
+cd Python
+python sandpile.py -s|--size <size> -v|--value <value> -p|--path <path>
+```
 ### License
 ```
 Permission is hereby granted, free of charge, to any person obtaining a copy
