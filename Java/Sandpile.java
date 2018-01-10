@@ -1,11 +1,20 @@
 import java.util.Arrays;
 import java.util.ArrayDeque;
 import java.lang.Math;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 
-class Sandpile {
+public class Sandpile {
 
 	private int dim;
 	private int[][] pile;
+
+	private final int LIGHTBLUE = 0x41719f;
+	private final int PURPLE = 0x3616b8;
+	private final int DARKRED = 0x7e0000;
+	private final int ORANGE = 0xcf7034;
 
 	public Sandpile(int dim, int pile[][]) {
 		this.dim = dim;
@@ -116,6 +125,27 @@ class Sandpile {
 		}
 	}
 
+	public void saveImg(String path) {
+		this.normalize();
+		BufferedImage img = new BufferedImage(this.getDim(), this.getDim(), BufferedImage.TYPE_INT_RGB);
+		for (int i = 0; i < this.getDim(); ++i) {
+			for (int j = 0; j < this.getDim(); ++j) {
+				if (this.get(i,j) == 0) img.setRGB(i,j,PURPLE);
+				if (this.get(i,j) == 1) img.setRGB(i,j,ORANGE);
+				if (this.get(i,j) == 2) img.setRGB(i,j,LIGHTBLUE);
+				if (this.get(i,j) == 3) img.setRGB(i,j,DARKRED);
+			}	
+		}
+		System.out.println("Generated image");
+		File f = new File(path);
+		try {
+			ImageIO.write(img, "PNG", f);
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public int getDim() {
 		return this.dim;
 	}
@@ -162,5 +192,57 @@ class Sandpile {
 
 	public int get(int x, int y) {
 		return this.pile[x][y];
+	}
+
+	class Tuple {
+
+		private int x;
+		private int y;
+
+		public Tuple(int x, int y) {
+			this.x = x;
+			this.y = y;
+		}
+
+		public int getX() {
+			return this.x;
+		}
+
+		public int getY() {
+			return this.y;
+		}
+
+		public String toString() {
+			return "("+x+","+y+")";
+		}
+	}
+
+	public static void main(String[] args) {
+		int dim = 129;
+		int sand = 1028;
+		String path = "../fractal.png";
+		for (int i = 0; i < args.length; ++i) {
+			if (args[i].matches("-s|--size") && i+1 <= args.length) dim = parseInt(args[i+1], "--size");
+			if (args[i].matches("-v|--value") && i+1 <= args.length) sand = parseInt(args[i+1], "--value");
+			if (args[i].matches("-p|--path") && i+1 <= args.length) path = args[i+1];
+		}
+		
+		long start = System.currentTimeMillis();
+		Sandpile pile = new Sandpile(dim);
+		pile.setMid(sand);
+		pile.saveImg(path);
+		long stop = System.currentTimeMillis();
+		long duration = (stop-start)/(1000);
+		System.out.println("Task took " + duration + " seconds");
+	}
+
+	public static int parseInt(String arg, String purpose) {
+		try {
+			return Integer.parseInt(arg);
+		} catch(NumberFormatException e) {
+			System.err.println("Argument of " + purpose + " has to be an Integer. (provided \"" + arg + "\")");
+			System.exit(1);
+			return 0;
+		}
 	}
 }
