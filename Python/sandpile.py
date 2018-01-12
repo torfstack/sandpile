@@ -3,7 +3,6 @@ import numpy as np
 import scipy.misc as smp
 import time
 from collections import deque
-from math import ceil
 
 colors = {1 : [207,112,52],
 		2 : [65,113,159],

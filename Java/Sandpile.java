@@ -1,6 +1,5 @@
 import java.util.Arrays;
 import java.util.ArrayDeque;
-import java.lang.Math;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -92,13 +91,13 @@ public class Sandpile {
 					this.set(a,b-1,this.get(a,b-1)+inc);
 					if (this.get(a,b-1) > 3) queue.add(new Tuple(a,b-1));
 				}
-				if (a < this.dim-1 && (!sym_hor || a < Math.ceil((float)this.dim/2))) {
-					if (a+1==Math.ceil((float)this.dim/2)) this.set(a+1,b,this.get(a+1,b)+inc);
+				if (a < this.dim-1 && (!sym_hor || a < (this.dim+1)/2)) {
+					if (a+1==(this.dim+1)/2) this.set(a+1,b,this.get(a+1,b)+inc);
 					this.set(a+1,b,this.get(a+1,b)+inc);
 					if (this.get(a+1,b) > 3) queue.add(new Tuple(a+1,b));
 				}
-				if (b < this.dim-1 && (!sym_vert || b < Math.ceil((float)this.dim/2))) {
-					if (b+1==Math.ceil((float)this.dim/2)) this.set(a,b+1,this.get(a,b+1)+inc);
+				if (b < this.dim-1 && (!sym_vert || b < (this.dim+1)/2)) {
+					if (b+1==(this.dim+1)/2) this.set(a,b+1,this.get(a,b+1)+inc);
 					this.set(a,b+1,this.get(a,b+1)+inc);
 					if (this.get(a,b+1) > 3) queue.add(new Tuple(a,b+1));
 				}
@@ -172,7 +171,7 @@ public class Sandpile {
 
 	public void setMid(int e) {
 		if (this.dim < 1) return;
-		if (this.dim%2 == 1) this.pile[(this.dim-1)/2][(this.dim-1)/2] = e;
+		else if (this.dim%2 == 1) this.pile[(this.dim-1)/2][(this.dim-1)/2] = e;
 		else {
 			this.pile[this.dim/2][this.dim/2] = e;
 			this.pile[(this.dim-1)/2][this.dim/2] = e;
