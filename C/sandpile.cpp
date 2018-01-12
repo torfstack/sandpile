@@ -1,7 +1,6 @@
 #include <iostream>
 #include <vector>
 #include <queue>
-#include <cmath>
 #include <time.h>
 #include <stdlib.h>
 #include <png++/png.hpp>
@@ -74,8 +73,8 @@ class Sandpile {
 
 
 			// populate queue; Queue only contains entries > 3 after this
-			int axis_hor = sym_hor?(int)std::ceil((float)this->dim/2):this->dim-1;
-			int axis_vert = sym_vert?(int)std::ceil((float)this->dim/2):this->dim-1;
+			int axis_hor = sym_hor?(this->dim+1)/2:this->dim-1;
+			int axis_vert = sym_vert?(this->dim+1)/2:this->dim-1;
 			for (int i = 0; i <= axis_hor; ++i) {
 				for (int j = 0; j <= axis_vert; ++j) {
 					if (this->get(i,j) > 3) q.push_back(Tuple(i,j));
@@ -102,13 +101,13 @@ class Sandpile {
 						this->set(a,b-1,this->get(a,b-1)+inc);
 						if (this->get(a,b-1) > 3) q.push_back(Tuple(a,b-1));
 					}
-					if (a < this->dim-1 && (!sym_hor || a < std::ceil((float)this->dim/2))) {
-						if (a+1==std::ceil((float)this->dim/2)) this->set(a+1,b,this->get(a+1,b)+inc);
+					if (a < this->dim-1 && (!sym_hor || a < (this->dim+1)/2)) {
+						if (a+1==(this->dim+1)/2) this->set(a+1,b,this->get(a+1,b)+inc);
 						this->set(a+1,b,this->get(a+1,b)+inc);
 						if (this->get(a+1,b) > 3) q.push_back(Tuple(a+1,b));
 					}
-					if (b < this->dim-1 && (!sym_vert || b < std::ceil((float)this->dim/2))) {
-						if (b+1==std::ceil((float)this->dim/2)) this->set(a,b+1,this->get(a,b+1)+inc);
+					if (b < this->dim-1 && (!sym_vert || b < (this->dim+1)/2)) {
+						if (b+1==(this->dim+1)/2) this->set(a,b+1,this->get(a,b+1)+inc);
 						this->set(a,b+1,this->get(a,b+1)+inc);
 						if (this->get(a,b+1) > 3) q.push_back(Tuple(a,b+1));
 					}

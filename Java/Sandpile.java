@@ -64,8 +64,8 @@ public class Sandpile {
 
 
 		// populate queue; Queue only contains entries > 3 after this
-		int axis_hor = sym_hor?(int)Math.ceil((float)this.dim/2):this.dim-1;
-		int axis_vert = sym_vert?(int)Math.ceil((float)this.dim/2):this.dim-1;
+		int axis_hor = sym_hor?(this.dim+1)/2:this.dim-1;
+		int axis_vert = sym_vert?(this.dim+1)/2:this.dim-1;
 		for (int i = 0; i <= axis_hor; ++i) {
 			for (int j = 0; j <= axis_vert; ++j) {
 				if (this.pile[i][j] > 3) queue.add(new Tuple(i,j));
