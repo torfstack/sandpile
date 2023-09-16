@@ -8,42 +8,10 @@ A *normalized* sandpile contains no values greater than 3. If a cell contains a 
 343 -> 404 -> 040 -> 101
 030    040    202    212
 ```
-Example fractal with dimension 400 and start value 30000
+Example fractal with dimension 401 and start value 300000
 
-![example fractal with dimension 400 and start value 30000](fractal.png)
+![example fractal with dimension 401 and start value 300000](fractal_rust.png)
 
-### C++
-Build
-```
-cd C
-make
-```
-Run
-```
-./sandpile --size <size> --value <value> --path <path>
-```
-with
-```
-<size> : image output will have size <size>x<size>
-<value> : start value of center cell, all other cells are initialized to 0
-<path> : image store location (default "fractal.png")
-```
-### Java
-Build
-```
-cd Java
-javac Sandpile.java
-```
-Run
-```
-java Sandpile -s|--size <size> -v|--value <value> -p|--path <path>
-```
-### Python
-Requires numpy and scipy.misc
-```
-cd Python
-python sandpile.py -s|--size <size> -v|--value <value> -p|--path <path>
-```
 ### License
 ```
 Permission is hereby granted, free of charge, to any person obtaining a copy
